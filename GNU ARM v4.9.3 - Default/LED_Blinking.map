@@ -1690,7 +1690,7 @@ OUTPUT(LED_Blinking.axf elf32-littlearm)
  .comment       0x0000000000000000       0x6f /Applications/Simplicity Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//protocol/bluetooth_2.4/lib/EFR32BG1B/GCC/bgapi.a(ubt_gatt_client.c.obj)
  .comment       0x0000000000000000       0x6f /Applications/Simplicity Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//protocol/bluetooth_2.4/lib/EFR32BG1B/GCC/bgapi.a(att_client.c.obj)
 
-.debug_info     0x0000000000000000     0xe707
+.debug_info     0x0000000000000000     0xe6f8
  .debug_info    0x0000000000000000      0x168 ./application_properties.o
  .debug_info    0x0000000000000168      0x58e ./gatt_db.o
  .debug_info    0x00000000000006f6     0x4136 ./main.o
@@ -1706,8 +1706,8 @@ OUTPUT(LED_Blinking.axf elf32-littlearm)
  .debug_info    0x000000000000b6b6     0x185d ./src/InitDevice.o
  .debug_info    0x000000000000cf13      0x30d ./src/cmu.o
  .debug_info    0x000000000000d220      0x61b ./src/gpio.o
- .debug_info    0x000000000000d83b      0xb4c ./src/letimer.o
- .debug_info    0x000000000000e387      0x380 ./src/sleep.o
+ .debug_info    0x000000000000d83b      0xb3d ./src/letimer.o
+ .debug_info    0x000000000000e378      0x380 ./src/sleep.o
 
 .debug_abbrev   0x0000000000000000     0x1aee
  .debug_abbrev  0x0000000000000000       0x97 ./application_properties.o
@@ -1783,40 +1783,40 @@ OUTPUT(LED_Blinking.axf elf32-littlearm)
  .debug_line    0x00000000000049dc      0x3aa ./src/letimer.o
  .debug_line    0x0000000000004d86      0x2c6 ./src/sleep.o
 
-.debug_str      0x0000000000000000     0x95cf
+.debug_str      0x0000000000000000     0x95c8
  .debug_str     0x0000000000000000      0x257 ./application_properties.o
                                         0x2ae (size before relaxing)
  .debug_str     0x0000000000000257      0x564 ./gatt_db.o
                                         0x75e (size before relaxing)
- .debug_str     0x00000000000007bb     0x49d5 ./main.o
+ .debug_str     0x00000000000007bb     0x49db ./main.o
                                        0x4f42 (size before relaxing)
- .debug_str     0x0000000000005190      0xe4b ./bgapi/dmadrv.o
+ .debug_str     0x0000000000005196      0xe4b ./bgapi/dmadrv.o
                                        0x10bd (size before relaxing)
- .debug_str     0x0000000000005fdb       0x90 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
+ .debug_str     0x0000000000005fe1       0x90 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
                                         0x294 (size before relaxing)
- .debug_str     0x000000000000606b     0x10e6 ./emlib/em_cmu.o
+ .debug_str     0x0000000000006071     0x10e6 ./emlib/em_cmu.o
                                        0x13db (size before relaxing)
- .debug_str     0x0000000000007151      0x505 ./emlib/em_gpio.o
+ .debug_str     0x0000000000007157      0x505 ./emlib/em_gpio.o
                                         0x82c (size before relaxing)
- .debug_str     0x0000000000007656      0x1e8 ./emlib/em_letimer.o
+ .debug_str     0x000000000000765c      0x1e8 ./emlib/em_letimer.o
                                         0x44f (size before relaxing)
- .debug_str     0x000000000000783e      0x57f ./emlib/em_rtcc.o
+ .debug_str     0x0000000000007844      0x57f ./emlib/em_rtcc.o
                                         0x7f4 (size before relaxing)
- .debug_str     0x0000000000007dbd       0xd6 ./emlib/em_system.o
+ .debug_str     0x0000000000007dc3       0xd6 ./emlib/em_system.o
                                         0x2f9 (size before relaxing)
- .debug_str     0x0000000000007e93      0x8f4 ./emlib/em_usart.o
+ .debug_str     0x0000000000007e99      0x8f4 ./emlib/em_usart.o
                                         0xdfa (size before relaxing)
- .debug_str     0x0000000000008787      0x3e6 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
+ .debug_str     0x000000000000878d      0x3e6 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
                                         0xe95 (size before relaxing)
- .debug_str     0x0000000000008b6d      0x683 ./src/InitDevice.o
+ .debug_str     0x0000000000008b73      0x683 ./src/InitDevice.o
                                        0x162a (size before relaxing)
- .debug_str     0x00000000000091f0       0x26 ./src/cmu.o
+ .debug_str     0x00000000000091f6       0x26 ./src/cmu.o
                                         0x5e2 (size before relaxing)
- .debug_str     0x0000000000009216       0x29 ./src/gpio.o
+ .debug_str     0x000000000000921c       0x29 ./src/gpio.o
                                         0x783 (size before relaxing)
- .debug_str     0x000000000000923f      0x2e9 ./src/letimer.o
-                                        0x93d (size before relaxing)
- .debug_str     0x0000000000009528       0xa7 ./src/sleep.o
+ .debug_str     0x0000000000009245      0x2dc ./src/letimer.o
+                                        0x930 (size before relaxing)
+ .debug_str     0x0000000000009521       0xa7 ./src/sleep.o
                                         0x2f1 (size before relaxing)
 
 .debug_loc      0x0000000000000000     0x423e

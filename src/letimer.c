@@ -26,8 +26,8 @@ void LETIMER_setup(sleepstate_enum e){
 	    uint16_t le_comp1_em2 = le_comp0_em2 - (le_on_seconds * le_lfxo_ticks_second);
 
 	    // ULFRCO setup, oscillator ticks are milliseconds
-	    uint16_t ulfrco_ticks;
-	    uint16_t le_ulfrco_ticks_second = ulfrco_ticks;
+	    //uint16_t le_ulfrco_ticks_second = ulfrco_ticks;
+	    uint16_t le_ulfrco_ticks_second = LETIMER_ULFRCO_TICK_S;
 	    uint16_t le_comp0_em3 = le_period_seconds * le_ulfrco_ticks_second;
 	    uint16_t le_comp1_em3 = le_comp0_em3 - (le_on_seconds * le_ulfrco_ticks_second);
 
@@ -38,13 +38,14 @@ void LETIMER_setup(sleepstate_enum e){
 	if (e < EM3) {
 		LETIMER_CompareSet(LETIMER0, 0, le_comp0_em2);
 		LETIMER_CompareSet(LETIMER0, 1, le_comp1_em2);
-	} else {
+		if (LE_DIVIDER2) { // Scaling needed for periods 2 seconds or greater
+		            CMU->LFAPRESC0 |= // prescaler: divide by 2 for timer
+		          ((_CMU_LFAPRESC0_LETIMER0_DIV2 << _CMU_LFAPRESC0_LETIMER0_SHIFT) & _CMU_LFAPRESC0_MASK);
+		}
+		}else {
         LETIMER_CompareSet(LETIMER0, 0, le_comp0_em3);
         LETIMER_CompareSet(LETIMER0, 1, le_comp1_em3);
 	}
-
-	// prescaler: divide by 2 for timer
-	CMU->LFAPRESC0 |= ((_CMU_LFAPRESC0_LETIMER0_DIV2 << _CMU_LFAPRESC0_LETIMER0_SHIFT) & _CMU_LFAPRESC0_MASK);
 
 	// Set configurations for LETIMER 0
 	const LETIMER_Init_TypeDef letimerInit =
@@ -87,8 +88,6 @@ void LETIMER0_IRQHandler(void) {
 	intFlags = LETIMER_IntGet(LETIMER0);
 
 	LETIMER_IntClear(LETIMER0,intFlags);
-	    //LETIMER_IntClear(LETIMER0,LETIMER_IFS_COMP0);
-	    //LETIMER_IntClear(LETIMER0,LETIMER_IFS_COMP1);
 
 	    if (intFlags & LETIMER_IFS_COMP0) {
 	        led0_on();
