@@ -23,6 +23,7 @@
 // functions
 //***********************************************************************************
 void gpio_init(void){
+    CMU_ClockEnable(cmuClock_GPIO, true);
 
 	// Set LED ports to be standard output drive with default off (cleared)
 //	GPIO_DriveStrengthSet(LED0_port, gpioDriveStrengthStrongAlternateStrong);
@@ -30,7 +31,14 @@ void gpio_init(void){
 	GPIO_PinModeSet(LED0_port, LED0_pin, gpioModePushPull, LED0_default);
 
 //	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthStrongAlternateStrong);
-	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthWeakAlternateWeak);
-	GPIO_PinModeSet(LED1_port, LED1_pin, gpioModePushPull, LED1_default);
+//	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthWeakAlternateWeak);
+//	GPIO_PinModeSet(LED1_port, LED1_pin, gpioModePushPull, LED1_default);
+}
 
+inline void led0_on(){
+	GPIO_PinOutSet(LED0_port, LED0_pin);
+}
+
+inline void led0_off() {
+    GPIO_PinOutClear(LED0_port, LED0_pin);
 }

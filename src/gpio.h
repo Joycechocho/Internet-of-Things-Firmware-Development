@@ -26,4 +26,6 @@
 // function prototypes
 //***********************************************************************************
 void gpio_init(void);
+void led0_on();
+void led0_off();
 

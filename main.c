@@ -124,7 +124,10 @@ uint8_t boot_to_dfu = 0;
  */
 int main(void)
 {
+
 	int i;
+
+	blockSleepMode(EM3);
 
 	#ifdef FEATURE_SPI_FLASH
 	  /* Put the SPI flash into Deep Power Down mode for those radio boards where it is available */
@@ -136,23 +139,23 @@ int main(void)
 	#endif /* FEATURE_SPI_FLASH */
 
   /* Initialize peripherals */
-//  enter_DefaultMode_from_RESET();
+	  enter_DefaultMode_from_RESET();
 
   /* Initialize stack */
-//  gecko_init(&config);
+	  gecko_init(&config);
 
 	/* Initialize clocks */
-	cmu_init();
-
-	/* Initialize LETIMER0 */
-	LETIMER_setup();
+	cmu_init(LOWEST_POWER_MODE);
 
 	/* Initialize GPIO */
 	gpio_init();
 
+	/* Initialize LETIMER0 */
+	LETIMER_setup(LOWEST_POWER_MODE);
 
   while (1) {
-	EMU_EnterEM3(true);
+	  sleep();
+	  /*
 	for (i = 0; i < 500000; i++);
 	GPIO_PinOutClear(LED0_port, LED0_pin);
 
@@ -162,7 +165,8 @@ int main(void)
 	for (i = 0; i < 1000000; i++);
 	GPIO_PinOutSet(LED0_port, LED0_pin);
 
-	//GPIO_PinOutSet(LED1_port, LED1_pin);
+	GPIO_PinOutSet(LED1_port, LED1_pin);
+		*/
     /* Event pointer for handling events */
 //    struct gecko_cmd_packet* evt;
 

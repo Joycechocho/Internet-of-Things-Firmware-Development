@@ -76,6 +76,7 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/gpio.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/main.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/cmu.h \
+ /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/sleep.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emdrv/sleep/inc/sleep.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/letimer.h
 
@@ -238,6 +239,8 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/main.h:
 
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/cmu.h:
+
+/Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/sleep.h:
 
 /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emdrv/sleep/inc/sleep.h:
 

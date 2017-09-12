@@ -5,6 +5,7 @@
 
 #include "em_emu.h"
 #include "em_int.h"
+#include "em_core.h"
 #include "sleep.h"
 
 
@@ -57,5 +58,5 @@ void unblockSleepMode(sleepstate_enum minimumMode)
     if(sleep_block_counter[minimumMode] > 0) {
         sleep_block_counter[minimumMode]--;
     }
-    CORE_ATOMIC_IRQ_Enable();
+    CORE_ATOMIC_IRQ_ENABLE();
 }
