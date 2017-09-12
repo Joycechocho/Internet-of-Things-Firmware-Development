@@ -24,14 +24,13 @@ void cmu_init(sleepstate_enum e){
 	CMU_HFXOAutostartEnable(0, false, false);
 	CMU_OscillatorEnable(cmuOsc_HFRCO, true, true);
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFRCO);
-
 	CMU_OscillatorEnable(cmuOsc_HFXO, false, false);	// Disable HFXO
-
 
 	// By default, LFRCO is enabled
 	//CMU_OscillatorEnable(cmuOsc_LFXO, false, false);		// Disable LFXO
 
-
+	/* Peripheral clocks enabled */
+	//LETIMER0
 	 if (e < EM3) {
 	        CMU_OscillatorEnable(cmuOsc_LFXO, true, true);
 	        CMU_ClockSelectSet(cmuClock_LFA, cmuSelect_LFXO);
@@ -43,7 +42,7 @@ void cmu_init(sleepstate_enum e){
 		CMU_ClockEnable(cmuClock_CORELE, true);
 		CMU_ClockEnable(cmuClock_LETIMER0, true);
 
-	// Peripheral clocks enabled
+	//GPIO
 	CMU_ClockEnable(cmuClock_GPIO, true);
 }
 

@@ -139,10 +139,10 @@ int main(void)
 	#endif /* FEATURE_SPI_FLASH */
 
   /* Initialize peripherals */
-	  enter_DefaultMode_from_RESET();
+	enter_DefaultMode_from_RESET();
 
   /* Initialize stack */
-	  gecko_init(&config);
+	gecko_init(&config);
 
 	/* Initialize clocks */
 	cmu_init(LOWEST_POWER_MODE);

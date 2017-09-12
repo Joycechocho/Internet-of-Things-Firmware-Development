@@ -2,12 +2,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-
 #include "em_emu.h"
 #include "em_int.h"
 #include "em_core.h"
 #include "sleep.h"
-
 
 uint32_t sleep_block_counter[NUM_SLEEP_MODES];
 

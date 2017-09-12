@@ -10,7 +10,6 @@ typedef enum {
     EM4 = 4
 } sleepstate_enum;
 
-
 void sleep(void);
 void blockSleepMode(sleepstate_enum minimumMode);
 void unblockSleepMode(sleepstate_enum minimumMode);

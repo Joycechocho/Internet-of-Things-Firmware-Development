@@ -8,29 +8,27 @@
 #include "em_core.h"
 #include "sleep.h"
 
-
 /**************************************************************************//**
  * 	@brief
  * 		Establish the clock tree and set up the LETIMER
+ * 	@Inputs: sleepstate_enum
+ *      Speicify lowest energy mode timer will use
  *****************************************************************************/
 void LETIMER_setup(sleepstate_enum e){
 
 	// Ticks calculations
-	    double le_period_seconds = LE_PERIOD_SECONDS;
-	    double le_on_seconds = LE_ON_SECONDS;
+	double le_period_seconds = LE_PERIOD_SECONDS;
+	double le_on_seconds = LE_ON_SECONDS;
 
-	    // LXFO Timings
-	    uint16_t le_lfxo_ticks_second = LETIMER_LFXO_TICK_S / (LE_DIVIDER2 ? 2:1); //Divider on/off
+    // LXFO Timings
+	uint16_t le_lfxo_ticks_second = LETIMER_LFXO_TICK_S / (LE_DIVIDER2 ? 2:1); //Divider on/off
+    uint16_t le_comp0_em2 = le_period_seconds * le_lfxo_ticks_second;
+    uint16_t le_comp1_em2 = le_comp0_em2 - (le_on_seconds * le_lfxo_ticks_second);
 
-	    uint16_t le_comp0_em2 = le_period_seconds * le_lfxo_ticks_second;
-	    uint16_t le_comp1_em2 = le_comp0_em2 - (le_on_seconds * le_lfxo_ticks_second);
-
-	    // ULFRCO setup, oscillator ticks are milliseconds
-	    //uint16_t le_ulfrco_ticks_second = ulfrco_ticks;
-	    uint16_t le_ulfrco_ticks_second = LETIMER_ULFRCO_TICK_S;
-	    uint16_t le_comp0_em3 = le_period_seconds * le_ulfrco_ticks_second;
-	    uint16_t le_comp1_em3 = le_comp0_em3 - (le_on_seconds * le_ulfrco_ticks_second);
-
+	// ULFRCO setup, oscillator ticks are milliseconds
+    uint16_t le_ulfrco_ticks_second = LETIMER_ULFRCO_TICK_S;
+    uint16_t le_comp0_em3 = le_period_seconds * le_ulfrco_ticks_second;
+    uint16_t le_comp1_em3 = le_comp0_em3 - (le_on_seconds * le_ulfrco_ticks_second);
 
 	blockSleepMode(e);
 
@@ -63,7 +61,6 @@ void LETIMER_setup(sleepstate_enum e){
 
 	LETIMER_Init(LETIMER0, &letimerInit);
 	LETIMER0->CNT=0;
-
 
     // Setup LETIMER interrupts
 	CORE_ATOMIC_IRQ_DISABLE();
