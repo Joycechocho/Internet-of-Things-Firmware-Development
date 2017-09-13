@@ -151,7 +151,7 @@ int main(void)
 	gpio_init();
 
 	/* Initialize LETIMER0 */
-	LETIMER_setup(LOWEST_POWER_MODE);
+	LETIMER0_setup(LOWEST_POWER_MODE);
 
   while (1) {
 	  sleep();

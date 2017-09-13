@@ -21,10 +21,10 @@ void cmu_init(sleepstate_enum e){
 
 	// By default, HFRCO is enabled  cmuHFRCOFreq_19M0Hz
 	CMU_HFRCOBandSet(cmuHFRCOFreq_19M0Hz); 				// Set HFRCO frequency
-	CMU_HFXOAutostartEnable(0, false, false);
+	CMU_HFXOAutostartEnable(0, false, false);			//HFXO auto start must be disabled before switching to HFRCO
 	CMU_OscillatorEnable(cmuOsc_HFRCO, true, true);
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFRCO);
-	CMU_OscillatorEnable(cmuOsc_HFXO, false, false);	// Disable HFXO
+	CMU_OscillatorEnable(cmuOsc_HFXO, false, false);	// Disable HFXO to save energy after HFRCO has been enabled
 
 	// By default, LFRCO is enabled
 	//CMU_OscillatorEnable(cmuOsc_LFXO, false, false);		// Disable LFXO

@@ -14,7 +14,7 @@
  * 	@Inputs: sleepstate_enum
  *      Speicify lowest energy mode timer will use
  *****************************************************************************/
-void LETIMER_setup(sleepstate_enum e){
+void LETIMER0_setup(sleepstate_enum e){
 
 	// Ticks calculations
 	double le_period_seconds = LE_PERIOD_SECONDS;
