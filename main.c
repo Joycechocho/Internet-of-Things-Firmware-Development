@@ -93,6 +93,7 @@ uint8_t boot_to_dfu = 0;
 #include "cmu.h"
 #include "sleep.h"
 #include "letimer.h"
+#include "adc.h"
 
 //***********************************************************************************
 // defined files
@@ -149,6 +150,9 @@ int main(void)
 
 	/* Initialize GPIO */
 	gpio_init();
+
+	/* Initialize ADC0 */
+	ADC0_setup();
 
 	/* Initialize LETIMER0 */
 	LETIMER0_setup(LOWEST_POWER_MODE);

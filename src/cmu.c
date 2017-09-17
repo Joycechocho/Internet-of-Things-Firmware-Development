@@ -44,5 +44,17 @@ void cmu_init(sleepstate_enum e){
 
 	//GPIO
 	CMU_ClockEnable(cmuClock_GPIO, true);
+
+	//ADC
+	/* Select AUXHFRCO for ADC ASYNC mode so that ADC can run on EM2 - EM3 */
+	CMU->ADCCTRL = CMU_ADCCTRL_ADC0CLKSEL_AUXHFRCO;
+	CMU_AUXHFRCOBandSet(cmuAUXHFRCOFreq_16M0Hz);  //??? How to determine the frequency and prescalar
+	CMU_OscillatorEnable(cmuOsc_AUXHFRCO, true, true);
+	CMU_ClockSelectSet( cmuClock_HF, cmuOsc_AUXHFRCO );
+
+	//CMU_ClockEnable(cmuClock_HFPER, true);
+	CMU_ClockEnable(cmuClock_ADC0, true);
+
 }
+
 
