@@ -12,7 +12,7 @@
 #include "em_int.h"
 #include "em_core.h"
 
-
+uint16_t adc_sample_count=0;
 uint16_t  adc_sample_buffer[ADC_NUMBER_SAMPLES] = {0};
 
 void ADC0_setup(){
@@ -38,7 +38,6 @@ void ADC0_setup(){
 	singleInit.reference    = adcRefVDD;        // VDD, should be equal to or more than 3.3V
 	singleInit.acqTime		= adcAcqTime32;		// Acquisition time			= 32 ADC clock cycles
 	singleInit.resolution	= adcRes12Bit;		// Resolution 				= 12 bits
-	singleInit.rep			= true;
 	singleInit.prsEnable 	= true;
 	singleInit.diff			= false;			// Differential mode		= false
 	singleInit.posSel       = adcPosSelAPORT3XCH8;
@@ -75,28 +74,24 @@ void ADC0_setup(){
 
 void ADC0_IRQHandler() {
 
-	uint16_t adc_sample_count = 0;
-
 	int intFlags;
-	CORE_ATOMIC_IRQ_DISABLE();
 	intFlags = ADC_IntGet(ADC0);
 	ADC_IntClear(ADC0, ADC_IFC_SINGLECMP);
-	if (intFlags & ADC_IF_SINGLECMP) {
+
+	if (intFlags & ADC_IF_SINGLE) {
 		   adc_sample_buffer[adc_sample_count] = ADC0->SINGLEDATA;
 		   adc_sample_count++;
 
-		   if (adc_sample_count > ADC_NUMBER_SAMPLES) {
+		   if (adc_sample_count == ADC_NUMBER_SAMPLES) {
 			   adc_sample_count = 0;
 
-			   //ADC off
-			   //ADC0->CMD = ADC_CMD_SINGLESTOP;
-			   //unblockSleepMode(EM1);
+			    //ADC off
+			    ADC0->CMD = ADC_CMD_SINGLESTOP;
+			    unblockSleepMode(EM1);
 
-			   led1_tally();
-
+		       led1_tally();
 		      }
 	}
-	CORE_ATOMIC_IRQ_ENABLE();
 
 }
 void led1_tally() {
@@ -112,6 +107,6 @@ void led1_tally() {
     if ( average < 2.83 && average > 2.79 ) {
          led1_on();
     } else if ( average < 1.65 && average > 1.62 ) {
-         led0_off();
+         led1_off();
     }
 }
