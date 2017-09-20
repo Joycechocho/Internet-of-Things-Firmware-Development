@@ -31,8 +31,8 @@ void gpio_init(void){
 	GPIO_PinModeSet(LED0_port, LED0_pin, gpioModePushPull, LED0_default);
 
 //	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthStrongAlternateStrong);
-//	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthWeakAlternateWeak);
-//	GPIO_PinModeSet(LED1_port, LED1_pin, gpioModePushPull, LED1_default);
+	GPIO_DriveStrengthSet(LED1_port, gpioDriveStrengthWeakAlternateWeak);
+	GPIO_PinModeSet(LED1_port, LED1_pin, gpioModePushPull, LED1_default);
 
 	GPIO_PinModeSet(gpioPortA, 0, gpioModePushPull, 0); //configure the GPIO of joystick
 }
