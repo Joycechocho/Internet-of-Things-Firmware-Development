@@ -158,7 +158,7 @@ int main(void)
 	LETIMER0_setup(LOWEST_POWER_MODE);
 
   while (1) {
-	  //sleep();
+	  sleep();
   }
 }
 

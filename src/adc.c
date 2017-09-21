@@ -17,7 +17,7 @@ uint16_t  adc_sample_buffer[ADC_NUMBER_SAMPLES] = {0};
 
 void ADC0_setup(){
 
-	blockSleepMode(EM3);
+	blockSleepMode(EM2);
 
 	GPIO_PinModeSet(gpioPortA, 0, gpioModeDisabled, 0);
 
@@ -62,8 +62,8 @@ void ADC0_setup(){
 
 	// Setup ADC interrupts
   	CORE_ATOMIC_IRQ_DISABLE();
-  		//ADC0->IFC   = ADC_IFC_SINGLECMP;
-	   	//ADC0->IEN   |= ADC_IEN_SINGLECMP;
+  		ADC0->IFC   = ADC_IFC_SINGLECMP;
+	   	ADC0->IEN   |= ADC_IEN_SINGLECMP;
 	 NVIC_ClearPendingIRQ(ADC0_IRQn);
      NVIC_EnableIRQ(ADC0_IRQn);
     CORE_ATOMIC_IRQ_ENABLE();
@@ -75,27 +75,31 @@ void ADC0_setup(){
 void ADC0_IRQHandler() {
 
 	int intFlags;
+	CORE_ATOMIC_IRQ_DISABLE();
+
 	intFlags = ADC_IntGet(ADC0);
-	ADC_IntClear(ADC0, ADC_IFC_SINGLECMP);
+    ADC_IntClear(ADC0, ADC_IFC_SINGLECMP);
 
 	if (intFlags & ADC_IF_SINGLE) {
+
+
+
 		   adc_sample_buffer[adc_sample_count] = ADC0->SINGLEDATA;
-		   adc_sample_count++;
-
-		   if (adc_sample_count == ADC_NUMBER_SAMPLES) {
-			   adc_sample_count = 0;
-
-			    //ADC off
-			    ADC0->CMD = ADC_CMD_SINGLESTOP;
-			    unblockSleepMode(EM1);
-
-		       led1_tally();
-		      }
+		            adc_sample_count++;
+		            if (adc_sample_count > ADC_NUMBER_SAMPLES) {
+		                adc_sample_count = 0;
+		                led1_tally();
+		            }
 	}
+    CORE_ATOMIC_IRQ_ENABLE();
 
 }
 void led1_tally() {
-	float average=0;
+float average=0;
+
+    //ADC off
+    ADC0->CMD = ADC_CMD_SINGLESTOP;
+    unblockSleepMode(EM1);
 
     for (int i=0; i<ADC_NUMBER_SAMPLES; i++) {
         average+=adc_sample_buffer[i];
