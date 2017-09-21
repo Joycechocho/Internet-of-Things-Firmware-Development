@@ -15,6 +15,8 @@
 uint16_t adc_sample_count=0;
 uint16_t  adc_sample_buffer[ADC_NUMBER_SAMPLES] = {0};
 
+uint16_t sample;
+
 void ADC0_setup(){
 
 	blockSleepMode(EM2);
@@ -82,35 +84,17 @@ void ADC0_IRQHandler() {
 
 	if (intFlags & ADC_IF_SINGLE) {
 
+	    unblockSleepMode(EM1);
+	    sample = ADC0->SINGLEDATA;
+	    sample = (sample*3.3)/4096;
 
+    if ( sample < 2.83 && sample > 2.79 ) {
+         led1_on();
+    } else if ( sample < 1.65 && sample > 1.62 ) {
+         led1_off();
+    }
 
-		   adc_sample_buffer[adc_sample_count] = ADC0->SINGLEDATA;
-		            adc_sample_count++;
-		            if (adc_sample_count > ADC_NUMBER_SAMPLES) {
-		                adc_sample_count = 0;
-		                led1_tally();
-		            }
 	}
     CORE_ATOMIC_IRQ_ENABLE();
 
-}
-void led1_tally() {
-float average=0;
-
-    //ADC off
-    ADC0->CMD = ADC_CMD_SINGLESTOP;
-    unblockSleepMode(EM1);
-
-    for (int i=0; i<ADC_NUMBER_SAMPLES; i++) {
-        average+=adc_sample_buffer[i];
-    }
-
-    average = average / ADC_NUMBER_SAMPLES;
-    average = (average*3.3)/4096;
-
-    if ( average < 2.83 && average > 2.79 ) {
-         led1_on();
-    } else if ( average < 1.65 && average > 1.62 ) {
-         led1_off();
-    }
 }
