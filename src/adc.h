@@ -1,11 +1,5 @@
-//#define ADC_NUMBER_SAMPLES 200
-
-//#define LE_PERIOD_SECONDS (3) // Period must be in the range 0 - 2 seconds
-//#define LE_ON_SECONDS (.2)    //200mS
-
-//#define SAMPLE 200
-//#define CLEAR_ALL 0xFFFFFFFF
-//#define CHNAGE_TIME_PERIOD 0.5
+#define LE_PERIOD_SECONDS (3) // Period must be in the range 0 - 2 seconds
+#define LE_ON_SECONDS (.2)    //200mS
 
 #define BUTTON_PRESSED_LOWRANGE 30
 #define BUTTON_PRESSED_HIGHRANGE 4000

@@ -48,7 +48,7 @@ void LETIMER0_setup(sleepstate_enum e){
 	// Set configurations for LETIMER 0
 	const LETIMER_Init_TypeDef letimerInit =
 	{
-			  .enable         = false,                   /* Start counting when init completed. */
+			  .enable         = false,                  /* Start counting when init completed. */
 			  .debugRun       = false,                  /* Counter shall not keep running during debug halt. */
 			  .comp0Top       = true,                   /* Load COMP0 register into CNT when counter underflows. COMP0 is used as TOP */
 			  .bufTop         = false,                  /* Don't load COMP1 into COMP0 when REP0 reaches 0. */

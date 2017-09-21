@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "em_adc.h"
+#include "em_letimer.h"
 #include "adc.h"
 #include <sleep.h>
 #include "main.h"
@@ -14,7 +15,7 @@
 
 void ADC0_setup(){
 
-	blockSleepMode(EM2);
+	blockSleepMode(EM3);
 
 	GPIO_PinModeSet(gpioPortA, 0, gpioModeDisabled, 0);
 
@@ -48,8 +49,8 @@ void ADC0_setup(){
 
     ADC0->CMPTHR = (BUTTON_PRESSED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_PRESSED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
 
-	 ADC0->BIASPROG = ADC_BIASPROG_ADCBIASPROG_NORMAL;
-	 ADC0->BIASPROG = ADC_BIASPROG_GPBIASACC_LOWACC;
+	ADC0->BIASPROG = ADC_BIASPROG_ADCBIASPROG_NORMAL;
+	ADC0->BIASPROG = ADC_BIASPROG_GPBIASACC_LOWACC;
 
 	// Enable window compare interrupt only
 	ADC_IntEnable(ADC0, ADC_IEN_SINGLECMP);
@@ -69,42 +70,47 @@ void ADC0_setup(){
 void ADC0_IRQHandler() {
 
 	int intFlags;
-	float static onTime;
+	float onTime;
     uint32_t CurrentLFAFreq = CMU_ClockFreqGet(cmuClock_LFA);
 	uint32_t adc_value;
+
+	// Ticks calculations for EM3
+	double le_period_seconds = LE_PERIOD_SECONDS;
+	double le_on_seconds = LE_ON_SECONDS;
+
+	// Calculate the value for compare register: LETIMER_CompareSet
+    uint16_t le_ulfrco_ticks_second = LETIMER_ULFRCO_TICK_S;
+    uint16_t le_comp0_em3 = le_period_seconds * le_ulfrco_ticks_second;
+    uint16_t le_comp1_em3_west = le_comp0_em3 - (le_on_seconds * le_ulfrco_ticks_second);
+    uint16_t le_comp1_em3_east = le_comp0_em3 - ((le_on_seconds + 0.5 ) * le_ulfrco_ticks_second);
 
 	CORE_ATOMIC_IRQ_DISABLE();
 
 	intFlags = ADC_IntGet(ADC0);
+    ADC_IntClear(ADC0,intFlags);
+
 	adc_value = (ADC0->SINGLEDATA);
 
 	if (adc_value < SOUTH_THRESHOLD)
 	{
 		led1_off();
-        ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
 	 }
 	else if(adc_value < WEST_THRESHOLD)
 	{
-	    onTime = ((float)LETIMER_CompareGet(LETIMER0, 0)/CurrentLFAFreq);
-	    onTime = (onTime - 0.5)*CurrentLFAFreq;
-	    LETIMER_CompareSet(LETIMER0,0,onTime);
-	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+	    onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	    onTime = (onTime - 0.5) * CurrentLFAFreq;
+	    LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_west);
 	}
 	else if (adc_value < EAST_THRESHOLD)
 	{
-		onTime = ((float)LETIMER_CompareGet(LETIMER0, 0)/CurrentLFAFreq);
-	    onTime = (onTime + 0.5)*CurrentLFAFreq;
-	    LETIMER_CompareSet(LETIMER0,0,onTime);
-	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+		onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	    onTime = (onTime + 0.5) * CurrentLFAFreq;
+	    LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_east);
 	}
 	else if(adc_value< NORTH_THRESHOLD)
 	{
 		led1_on();
-	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
 	}
-
-    ADC0->SINGLEFIFOCLEAR = 1;
-    ADC_IntClear(ADC0,intFlags);
 
     CORE_ATOMIC_IRQ_ENABLE();
 
