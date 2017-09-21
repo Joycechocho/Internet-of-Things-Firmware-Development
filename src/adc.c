@@ -46,7 +46,6 @@ void ADC0_setup(){
 	//enable compare threshold for single logic
 	ADC0->SINGLECTRL |= ADC_SINGLECTRL_CMPEN;
 
-
     ADC0->CMPTHR = (BUTTON_PRESSED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_PRESSED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
 
 	 ADC0->BIASPROG = ADC_BIASPROG_ADCBIASPROG_NORMAL;
@@ -68,71 +67,41 @@ void ADC0_setup(){
 }
 
 void ADC0_IRQHandler() {
-    float static onTime;
-    uint32_t CurrentLFAFreq = CMU_ClockFreqGet(cmuClock_LFA);
-
-    static bool switch_released;
-	uint32_t adc_value;
-
-	// Ticks calculations
-	double le_period_seconds = LE_PERIOD_SECONDS;
-	double le_on_seconds = LE_ON_SECONDS;
-
-	uint16_t le_lfxo_ticks_second = LETIMER_LFXO_TICK_S / (LE_DIVIDER2 ? 2:1); //Divider on/off
-    uint16_t le_comp0_em2 = le_period_seconds * le_lfxo_ticks_second;
-    uint16_t le_comp1_em2 = le_comp0_em2 - (le_on_seconds * le_lfxo_ticks_second);
 
 	int intFlags;
+	float static onTime;
+    uint32_t CurrentLFAFreq = CMU_ClockFreqGet(cmuClock_LFA);
+	uint32_t adc_value;
+
 	CORE_ATOMIC_IRQ_DISABLE();
 
 	intFlags = ADC_IntGet(ADC0);
-
 	adc_value = (ADC0->SINGLEDATA);
 
-	/******************************************************************************
-	The IF function below, credited to Sudeep Kulkarni
-	*******************************************************************************/
-	    if(switch_released){
-	        if(adc_value < RESET_THRESHOLD){									//button press to reset
-	            LETIMER_CompareSet(LETIMER0,1,le_comp1_em2);
-	            led1_off();												//turning the LED of as required by the assignment of reset
-	            switch_released = false;
-	            ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
-	        }
-	        else if (adc_value < SOUTH_THRESHOLD){							//south turning off the led 1
-	        	led1_off();													//turning the led off as per the requirements
-	            switch_released = false;
-	            ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
-	        }
-	        else if(adc_value < WEST_THRESHOLD){										//this is west hence decrement
-	            onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
-	           // if (onTime >= 0.5){
-	                onTime = (onTime - 0.5)*CurrentLFAFreq;
-	                LETIMER_CompareSet(LETIMER0,1,onTime);
-	               switch_released = false;
-	                ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
-	           // }
-	        }
-	        else if (adc_value < EAST_THRESHOLD){									//this is east hence increment
-	            onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
-	           // if(onTime < 3 - 0.5){
-	                onTime = (onTime + 0.5)*CurrentLFAFreq;							//new on time period set
-	                LETIMER_CompareSet(LETIMER0,1,onTime);
-	                switch_released = false;										//setting switch released to false
-	                ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);	//setting the value from 4000 to 4096 for switch release
-	           // }
-	        }
-	        else if(adc_value< NORTH_THRESHOLD){											//north turning on the led 1
-	            led1_on();
-	            switch_released = false;
-	            ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT); //setting the value from 4000 to 4096 for switch release
-	        }
-	    }
-	    else if(adc_value > NORTH_THRESHOLD){											//setting the switch release to true when the value is greater than the greatest
-	        switch_released = true;
-	        ADC0->CMPTHR = (BUTTON_PRESSED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_PRESSED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
-	    }
-
+	if (adc_value < SOUTH_THRESHOLD)
+	{
+		led1_off();
+        ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+	 }
+	else if(adc_value < WEST_THRESHOLD)
+	{
+	    onTime = ((float)LETIMER_CompareGet(LETIMER0, 0)/CurrentLFAFreq);
+	    onTime = (onTime - 0.5)*CurrentLFAFreq;
+	    LETIMER_CompareSet(LETIMER0,0,onTime);
+	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+	}
+	else if (adc_value < EAST_THRESHOLD)
+	{
+		onTime = ((float)LETIMER_CompareGet(LETIMER0, 0)/CurrentLFAFreq);
+	    onTime = (onTime + 0.5)*CurrentLFAFreq;
+	    LETIMER_CompareSet(LETIMER0,0,onTime);
+	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+	}
+	else if(adc_value< NORTH_THRESHOLD)
+	{
+		led1_on();
+	    ADC0->CMPTHR = (BUTTON_RELEASED_HIGHRANGE<<_ADC_CMPTHR_ADLT_SHIFT)|(BUTTON_RELEASED_LOWRANGE<<_ADC_CMPTHR_ADGT_SHIFT);
+	}
 
     ADC0->SINGLEFIFOCLEAR = 1;
     ADC_IntClear(ADC0,intFlags);
