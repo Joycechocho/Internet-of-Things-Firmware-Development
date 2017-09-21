@@ -12,11 +12,6 @@
 #include "em_int.h"
 #include "em_core.h"
 
-uint16_t adc_sample_count=0;
-uint16_t  adc_sample_buffer[ADC_NUMBER_SAMPLES] = {0};
-
-uint16_t sample;
-
 void ADC0_setup(){
 
 	blockSleepMode(EM2);
@@ -28,10 +23,11 @@ void ADC0_setup(){
 	ADC_InitSingle_TypeDef singleInit = ADC_INITSINGLE_DEFAULT;
 
 	// Configure settings common to single conversion
-	init.prescale		= ADC_PrescaleCalc(ADC_CLOCK, CMU_AUXHFRCOBandGet());
-	init.timebase 		= ADC_TimebaseCalc(CMU_AUXHFRCOBandGet());
-	init.warmUpMode		= adcWarmupKeepADCWarm;
-	init.em2ClockConfig = adcEm2ClockOnDemand;
+	init.prescale		= CMU_ClockFreqGet(cmuClock_AUX)/(200 + 1);
+	init.warmUpMode		= adcWarmupNormal;
+	init.em2ClockConfig = adcEm2ClockAlwaysOn;
+	init.timebase = ADC_TimebaseCalc(0);
+    init.tailgate = false;
 
 	// Initialize ADC0 with the above settings
 	ADC_Init(ADC0, &init);
@@ -40,10 +36,8 @@ void ADC0_setup(){
 	singleInit.reference    = adcRefVDD;        // VDD, should be equal to or more than 3.3V
 	singleInit.acqTime		= adcAcqTime32;		// Acquisition time			= 32 ADC clock cycles
 	singleInit.resolution	= adcRes12Bit;		// Resolution 				= 12 bits
-	singleInit.prsEnable 	= true;
-	singleInit.diff			= false;			// Differential mode		= false
+	singleInit.rep = true;
 	singleInit.posSel       = adcPosSelAPORT3XCH8;
-	singleInit.prsSel		= adcPRSSELCh0;
 	singleInit.fifoOverwrite= true;
 
 	// Initialize ADC0 in single conversion mode with the above settings
@@ -51,16 +45,15 @@ void ADC0_setup(){
 
 	//enable compare threshold for single logic
 	ADC0->SINGLECTRL |= ADC_SINGLECTRL_CMPEN;
-	ADC0->SINGLECTRL |= ADC_SINGLECTRL_REP;
 
-	ADC0->CMPTHR = _ADC_CMPTHR_RESETVALUE;
-	ADC0->CMPTHR = (ADC_CMP_GT_VALUE << _ADC_CMPTHR_ADGT_SHIFT) +
+	ADC0->CMPTHR = (ADC_CMP_GT_VALUE << _ADC_CMPTHR_ADGT_SHIFT) |
 	    (ADC_CMP_LT_VALUE << _ADC_CMPTHR_ADLT_SHIFT);
+
+	 ADC0->BIASPROG = ADC_BIASPROG_ADCBIASPROG_NORMAL;
+	 ADC0->BIASPROG = ADC_BIASPROG_GPBIASACC_LOWACC;
 
 	// Enable window compare interrupt only
 	ADC_IntEnable(ADC0, ADC_IEN_SINGLECMP);
-
-	ADC0->SINGLEFIFOCLEAR = ADC_SINGLEFIFOCLEAR_SINGLEFIFOCLEAR;//clear single conversion fifo
 
 	// Setup ADC interrupts
   	CORE_ATOMIC_IRQ_DISABLE();
@@ -75,26 +68,46 @@ void ADC0_setup(){
 }
 
 void ADC0_IRQHandler() {
+    float static onTime;
+    uint32_t CurrentLFAFreq = CMU_ClockFreqGet(cmuClock_LFA);
+
+	uint32_t adc_value;
 
 	int intFlags;
 	CORE_ATOMIC_IRQ_DISABLE();
 
 	intFlags = ADC_IntGet(ADC0);
-    ADC_IntClear(ADC0, ADC_IFC_SINGLECMP);
-
-	if (intFlags & ADC_IF_SINGLE) {
+    //ADC_IntClear(ADC0, ADC_IFC_SINGLECMP);
 
 	    unblockSleepMode(EM1);
-	    sample = ADC0->SINGLEDATA;
-	    sample = (sample*3.3)/4096;
+	    adc_value = (ADC0->SINGLEDATA);
 
-    if ( sample < 2.83 && sample > 2.79 ) {
-         led1_on();
-    } else if ( sample < 1.65 && sample > 1.62 ) {
-         led1_off();
-    }
+	        if (adc_value < 0xDBA && adc_value > 0xDB1){							//north
+			       led1_on();
+	            ADC0->CMPTHR = (0x1000<<_ADC_CMPTHR_ADLT_SHIFT)|(0xFA0<<_ADC_CMPTHR_ADGT_SHIFT);
+	        }
+	        else if(adc_value < 0x999 && adc_value > 0x996){		//west
+	            onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	                onTime = (onTime - 0.5)*CurrentLFAFreq;
+	                LETIMER_CompareSet(LETIMER0,1,onTime);
+	                ADC0->CMPTHR = (0x1000<<_ADC_CMPTHR_ADLT_SHIFT)|(0xFA0<<_ADC_CMPTHR_ADGT_SHIFT);
+	        }
+	        else if (adc_value < 0xC43 && adc_value > 0xC40){								//east
+	            onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	                onTime = (onTime + 0.5)*CurrentLFAFreq;
+	                LETIMER_CompareSet(LETIMER0,1,onTime);
+	                ADC0->CMPTHR = (0x1000<<_ADC_CMPTHR_ADLT_SHIFT)|(0xFA0<<_ADC_CMPTHR_ADGT_SHIFT);
+	            //}
+	        }
+	        else if(adc_value < 0x804 && adc_value > 0x7FA){											//south
+			       led1_off();
+	            ADC0->CMPTHR = (0x1000<<_ADC_CMPTHR_ADLT_SHIFT)|(0xFA0<<_ADC_CMPTHR_ADGT_SHIFT);
+	        }
 
-	}
+
+    ADC0->SINGLEFIFOCLEAR = 1;
+    ADC_IntClear(ADC0,intFlags);
+
     CORE_ATOMIC_IRQ_ENABLE();
 
 }
