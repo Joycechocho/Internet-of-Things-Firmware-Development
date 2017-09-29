@@ -93,7 +93,7 @@ void BMA280_enable(void){
 	Delay_Timer(1800);
 
 	/* Range +/- 4g */
-	bma280_write_byte(USART1, 0x05, 0x0F);
+	bma280_write_byte(USART1, 0x0F, 0x05);
 
 	/* Bandwidth 125Hz */
 	bma280_write_byte(USART1, 0x10, 0x0C);
@@ -110,10 +110,13 @@ void BMA280_enable(void){
 	bma280_write_byte(USART1, 0x19, 0x30);
 
 
+	NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);//clear any pending interrupts;
+	NVIC_DisableIRQ(GPIO_ODD_IRQn);
+
+
 	GPIO_PinModeSet(gpioPortD, 11, gpioModeInput, 0);
 	GPIO_IntConfig(gpioPortD, 11, true, false, true);//Set BG GPIO pin as Input to interrupt BG on BMA280 interrupt on rising edge;
 
-	NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);//clear any pending interrupts;
 	NVIC_EnableIRQ(GPIO_ODD_IRQn);	//Enable BG BMA280 GPIO interrupt pin ;
 }
 

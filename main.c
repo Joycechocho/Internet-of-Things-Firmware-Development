@@ -158,9 +158,8 @@ int main(void)
 	TIMER0_setup();
 	USART1_setup();
 
-	/* Return BMA280 to normal power mode from suspend mode*/
-	bma280_write_byte(USART1, 0x0F, 0x05 );
-	bma280_read_byte(USART1, 0x0F);
+	//bma280_write_byte(USART1, 0x0F, 0x05 );
+	//bma280_read_byte(USART1, 0x0F);
 
 	/* Initialize ADC0 */
 	ADC0_setup();
