@@ -88,12 +88,16 @@ uint8_t boot_to_dfu = 0;
 
 #include "em_device.h"
 #include "em_chip.h"
+#include "em_timer.h"
 #include "main.h"
 #include "gpio.h"
 #include "cmu.h"
 #include "sleep.h"
 #include "letimer.h"
 #include "adc.h"
+#include "timer.h"
+#include "usart.h"
+
 
 //***********************************************************************************
 // defined files
@@ -150,6 +154,13 @@ int main(void)
 
 	/* Initialize GPIO */
 	gpio_init();
+
+	TIMER0_setup();
+	USART1_setup();
+
+	/* Return BMA280 to normal power mode from suspend mode*/
+	bma280_write_byte(USART1, 0x0F, 0x05 );
+	bma280_read_byte(USART1, 0x0F);
 
 	/* Initialize ADC0 */
 	ADC0_setup();

@@ -8,10 +8,12 @@
 #include "main.h"
 #include "letimer.h"
 #include "gpio.h"
+#include "usart.h"
 #include "em_emu.h"
 #include "em_cmu.h"
 #include "em_int.h"
 #include "em_core.h"
+
 
 void ADC0_setup(){
 
@@ -89,11 +91,14 @@ void ADC0_IRQHandler() {
 	intFlags = ADC_IntGet(ADC0);
     ADC_IntClear(ADC0,intFlags);
 
+    CORE_ATOMIC_IRQ_ENABLE();
+
 	adc_value = (ADC0->SINGLEDATA);
 
 	if (adc_value < SOUTH_THRESHOLD)
 	{
-		led1_off();
+		//led1_off();
+		BMA280_disable();
 	 }
 	else if(adc_value < WEST_THRESHOLD)
 	{
@@ -109,9 +114,8 @@ void ADC0_IRQHandler() {
 	}
 	else if(adc_value< NORTH_THRESHOLD)
 	{
-		led1_on();
+		//led1_on();
+		BMA280_enable();
 	}
-
-    CORE_ATOMIC_IRQ_ENABLE();
 
 }

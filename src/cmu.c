@@ -55,6 +55,13 @@ void cmu_init(sleepstate_enum e){
 
 	CMU_ClockEnable(cmuClock_ADC0, true);
 
+	//TIMER0
+	CMU_ClockEnable(cmuClock_HFPER , true);
+	CMU_ClockEnable(cmuClock_TIMER0 , true);
+
+	//USART
+	CMU_ClockEnable(cmuClock_USART1 , true);
+
 }
 
 

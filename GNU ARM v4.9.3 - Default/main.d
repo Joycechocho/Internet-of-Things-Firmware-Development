@@ -72,6 +72,7 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_chip.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_system.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_gpio.h \
+ /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_timer.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/main.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/gpio.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/main.h \
@@ -79,7 +80,9 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/sleep.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emdrv/sleep/inc/sleep.h \
  /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/letimer.h \
- /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/adc.h
+ /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/adc.h \
+ /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/timer.h \
+ /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/usart.h
 
 ../boards.h:
 
@@ -233,6 +236,8 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
 
 /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_gpio.h:
 
+/Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_timer.h:
+
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/main.h:
 
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/gpio.h:
@@ -248,3 +253,7 @@ main.o: ../main.c ../boards.h ../ble-configuration.h ../board_features.h \
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/letimer.h:
 
 /Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/adc.h:
+
+/Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/timer.h:
+
+/Users/joyce/SimplicityStudio/v4_workspace/LED_Blinking/src/usart.h:
