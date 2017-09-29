@@ -5,3 +5,4 @@ void BMA280_enable(void);
 void BMA280_disable(void);
 void suspend_to_normal(void);
 void normal_to_suspend(void);
+void bma_wakeup(void);

@@ -18,6 +18,8 @@
 #include "gpio.h"
 #include "timer.h"
 
+volatile int gpio_flag =0;
+
 void USART1_setup(){
 
 	USART_TypeDef *spi = USART1;
@@ -29,11 +31,13 @@ void USART1_setup(){
 	        .databits = usartDatabits8,
 	        .master = true,
 	        .msbf = true,
-	        .clockMode = usartClockMode0, //rising edge
+	        .clockMode = usartClockMode3, //rising edge
 	        .autoTx = false,
 	        .autoCsEnable = true,
-	        .autoCsHold = 1,
-	        .autoCsSetup = 1,
+	        .autoCsHold = 0,
+	        .autoCsSetup = 0,
+			.prsRxEnable = 0,
+			.prsRxCh = usartPrsRxCh0,
 	};
 
 	USART_InitSync(spi, &spi_init);
@@ -57,6 +61,7 @@ void USART1_setup(){
 	//Delay_Timer(1800);
 }
 
+/*
 uint8_t bma280_read_byte(USART_TypeDef *usart, uint8_t address)
 {
     uint16_t data;
@@ -72,7 +77,34 @@ uint8_t bma280_read_byte(USART_TypeDef *usart, uint8_t address)
     tmp = tmp >> 8;
     return (uint8_t)tmp;
 }
+*/
 
+void bma_wakeup(void)
+{
+	__enable_irq();
+	TIMER_Enable(TIMER0,true);
+	blockSleepMode(EM1);
+}
+
+uint8_t bma280_read_byte(USART_TypeDef *usart, uint8_t reg_addr){
+	uint16_t final_value = 0x0000;
+	uint8_t result;
+
+
+	final_value |= 0xff;
+	final_value <<=8;
+	final_value |= (reg_addr | 0x80);
+
+	while (!(USART1->STATUS & USART_STATUS_TXBL));
+	USART1 -> TXDOUBLE = final_value;
+	while (!(USART1->STATUS & USART_STATUS_TXC));
+
+	result= (USART1 -> RXDOUBLEXP & _USART_RXDOUBLEXP_RXDATAP1_MASK );
+	USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+	USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+	return result;
+}
+/*
 void bma280_write_byte(USART_TypeDef *usart, uint8_t addr, uint8_t data ){
 
 	uint16_t tmp;
@@ -85,12 +117,46 @@ void bma280_write_byte(USART_TypeDef *usart, uint8_t addr, uint8_t data ){
     while (!(usart->STATUS & USART_STATUS_TXC)) ;//Waiting for transmission of last byte
     tmp = usart->RXDOUBLE; //reading out the data
 }
+*/
 
+uint8_t bma280_write_byte(USART_TypeDef *usart, uint8_t reg_addr, uint8_t data){
+	uint16_t final_value = 0x0000;
+	uint8_t result;
+
+
+	final_value |= data;
+	final_value <<=8;
+	final_value |= reg_addr;
+
+	while (!(USART1->STATUS & USART_STATUS_TXBL));
+	USART1 -> TXDOUBLE = final_value;
+	while (!(USART1->STATUS & USART_STATUS_TXC));
+
+	result= (USART1 -> RXDOUBLEXP & _USART_RXDOUBLEXP_RXDATAP1_MASK );
+	USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+	USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+	return result;
+}
+
+void normal_to_suspend(void){
+	//uint8_t data = bma280_read_byte(USART1, 0x11);
+	//uint8_t txdata = 0x80 | data;
+	//bma280_write_byte(USART1, 0x11, txdata );
+	bma280_write_byte(USART1, 0x11, 0x80);
+}
+
+void suspend_to_normal(void){
+	//uint8_t data = bma280_read_byte(USART1, 0x11);
+	//uint8_t txdata = 0x7F & data;
+	//bma280_write_byte(USART1, 0x11, txdata );
+	bma280_write_byte(USART1, 0x11, 0x00);
+	bma_wakeup();
+}
 
 void BMA280_enable(void){
 
 	suspend_to_normal();
-	Delay_Timer(1800);
+	//Delay_Timer(1800);
 
 	/* Range +/- 4g */
 	bma280_write_byte(USART1, 0x0F, 0x05);
@@ -106,12 +172,12 @@ void BMA280_enable(void){
 	/* Tap samples 4 */
 	/*Tap threshold 250mg*/
 	bma280_write_byte(USART1, 0x2B, 0x48);
-	bma280_write_byte(USART1, 0x16, 0x10);
+	bma280_write_byte(USART1, 0x16, 0x30);
 	bma280_write_byte(USART1, 0x19, 0x30);
 
 
-	NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);//clear any pending interrupts;
-	NVIC_DisableIRQ(GPIO_ODD_IRQn);
+	//NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);//clear any pending interrupts;
+	//NVIC_DisableIRQ(GPIO_ODD_IRQn);
 
 
 	GPIO_PinModeSet(gpioPortD, 11, gpioModeInput, 0);
@@ -122,49 +188,69 @@ void BMA280_enable(void){
 
 void BMA280_disable(void){
 	normal_to_suspend();
-	Delay_Timer(1800);
+	//Delay_Timer(1800);
 }
 
 
-void normal_to_suspend(void){
-	uint8_t data = bma280_read_byte(USART1, 0x11);
-	uint8_t txdata = 0x80 | data;
-	bma280_write_byte(USART1, 0x11, txdata );
-}
 
-void suspend_to_normal(void){
-	uint8_t data = bma280_read_byte(USART1, 0x11);
-	uint8_t txdata = 0x7F & data;
-	bma280_write_byte(USART1, 0x11, txdata );
-}
+
+
+
 
 void GPIO_ODD_IRQHandler(void){
-
-  GPIO->IFC = 0x00000800;
-  int k=0 ;
-  if(k==0){
-	  led1_on();
-	  bma280_write_byte(USART1, 0x16, 0x10);
-	  k=1;
-  }else{
-	  led1_off();
-	  bma280_write_byte(USART1, 0x16, 0x10);
-	  k=0;
-  }
-
-  //int intFlags;
-  //intFlags = GPIO_IntGet();
-  //GPIO_IntClear(intFlags);
-
-  //CORE_ATOMIC_IRQ_DISABLE();
 /*
-  if(intFlags & bma280_read_byte(USART1, "0x09") == "0010000"){
-	  led1_on();
-  }else if (intFlags & bma280_read_byte(USART1, "0x09") == "0001000"){
+  //GPIO->IFC = 0x00000800;
+  if(bma280_read_byte(USART1, 0x09) == 0x16){//single tap
 	  led1_off();
+	  //bma280_write_byte(USART1, 0x16, 0x10);
+
+  }else if(bma280_read_byte(USART1, 0x09) == 0x08){//double tap
+	  led1_on();
+	  //bma280_write_byte(USART1, 0x16, 0x10);
+
   }
   */
-  //CORE_ATOMIC_IRQ_ENABLE();
+
+	  __disable_irq();
+
+		GPIO->IFC = 0x00000800;
+
+		if(gpio_flag==0){
+			//GPIO_PinOutClear(LED1_port,LED1_pin);
+			led1_off();
+
+			while (!(USART1->STATUS & USART_STATUS_TXBL));
+			USART1->TXDOUBLE= 0x1016;
+			while (!(USART1->STATUS & USART_STATUS_TXC));
+			USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+			USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+
+			while (!(USART1->STATUS & USART_STATUS_TXBL));
+			USART1->TXDOUBLE= 0x1019;
+			while (!(USART1->STATUS & USART_STATUS_TXC));
+			USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+			USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+			gpio_flag =1;
+	     }
+	     else{
+	    	//GPIO_PinOutSet(LED1_port,LED1_pin);
+	    	 led1_on();
+	    	while (!(USART1->STATUS & USART_STATUS_TXBL));
+	    	USART1->TXDOUBLE= 0x2016;
+	    	while (!(USART1->STATUS & USART_STATUS_TXC));
+	    	USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+	    	USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+
+	  	 	while (!(USART1->STATUS & USART_STATUS_TXBL));
+	   	 	USART1->TXDOUBLE= 0x2019;
+	   	 	while (!(USART1->STATUS & USART_STATUS_TXC));
+	   	 	USART1->CMD |= _USART_CMD_CLEARRX_MASK;
+	   	 	USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
+	   	 	gpio_flag = 0;
+	     }
+		__enable_irq();
+
+
 
 }
 
