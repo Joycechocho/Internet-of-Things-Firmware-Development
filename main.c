@@ -155,16 +155,14 @@ int main(void)
 	/* Initialize GPIO */
 	gpio_init();
 
-	//TIMER0_setup();
-	timer_init();
+	/* Initialize USART1: spi */
 	USART1_setup();
 
-	bma280_write_byte(USART1, 0x11, 0x80 );
-	//suspend_to_normal();
-	//bma280_read_byte(USART1, 0x11);
+	//bma280_write_byte(USART1, 0x11, 0x80 );
+	normal_to_suspend();
 
-	//bma280_write_byte(USART1, 0x0F, 0x05 );
-	//bma280_read_byte(USART1, 0x0F);
+	/* Initialize TIMER0 */
+	TIMER0_setup();
 
 	/* Initialize ADC0 */
 	ADC0_setup();
