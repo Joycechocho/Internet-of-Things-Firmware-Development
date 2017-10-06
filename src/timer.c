@@ -51,7 +51,7 @@ void TIMER0_setup(void){
 	TIMER0->CNT = 0x0000;
 
 	TIMER_InitCC(TIMER0, 0, &timer_divider);
-	TIMER_TopSet(TIMER0, 75);
+	TIMER_TopSet(TIMER0, 80);//75
 	TIMER_IntEnable(TIMER0, TIMER_IF_OF);
 	NVIC_SetPriority(TIMER0_IRQn, 1);
 	NVIC_EnableIRQ(TIMER0_IRQn);

@@ -97,7 +97,7 @@ uint8_t boot_to_dfu = 0;
 #include "adc.h"
 #include "timer.h"
 #include "usart.h"
-
+#include "i2c.h"
 
 //***********************************************************************************
 // defined files
@@ -131,6 +131,7 @@ int main(void)
 {
 
 	int i;
+	uint16_t temp = 0;
 
 	blockSleepMode(EM3);
 
@@ -169,6 +170,13 @@ int main(void)
 
 	/* Initialize LETIMER0 */
 	LETIMER0_setup(LOWEST_POWER_MODE);
+
+
+
+	i2c_enable();
+	temp= I2C0_read();
+	//Caculate_Celsius(I2C0_read());
+
 
   while (1) {
 	  sleep();

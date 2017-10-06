@@ -62,6 +62,9 @@ void cmu_init(sleepstate_enum e){
 	//USART
 	CMU_ClockEnable(cmuClock_USART1 , true);
 
+	//I2C
+	CMU_ClockEnable(cmuClock_I2C0 , true);
+
 }
 
 
