@@ -103,15 +103,15 @@ void ADC0_IRQHandler() {
 	 }
 	else if(adc_value < WEST_THRESHOLD)
 	{
-	    onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
-	    onTime = (onTime - 0.5) * CurrentLFAFreq;
-	    LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_west);
+	    //onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	    //onTime = (onTime - 0.5) * CurrentLFAFreq;
+	    //LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_west);
 	}
 	else if (adc_value < EAST_THRESHOLD)
 	{
-		onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
-	    onTime = (onTime + 0.5) * CurrentLFAFreq;
-	    LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_east);
+		//onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
+	    //onTime = (onTime + 0.5) * CurrentLFAFreq;
+	    //LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_east);
 	}
 	else if(adc_value< NORTH_THRESHOLD)
 	{

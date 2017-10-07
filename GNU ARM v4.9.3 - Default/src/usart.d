@@ -56,7 +56,7 @@ src/usart.o: ../src/usart.c \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_common.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_gpio.h \
  ../src/adc.h ../src/sleep.h ../src/main.h ../src/letimer.h ../src/gpio.h \
- ../src/timer.h
+ ../src/timer.h ../src/i2c.h
 
 /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_usart.h:
 
@@ -181,3 +181,5 @@ src/usart.o: ../src/usart.c \
 ../src/gpio.h:
 
 ../src/timer.h:
+
+../src/i2c.h:

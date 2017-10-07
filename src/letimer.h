@@ -10,7 +10,7 @@ extern uint16_t ulfrco_ticks;
 
 #define LE_DIVIDER2 true        //Needed for periods 2 seconds and over
 #define LE_PERIOD_SECONDS (3) // Period must be in the range 0 - 2 seconds
-#define LE_ON_SECONDS (.2)    //200mS
+#define LE_ON_SECONDS (0)    //200mS
 
 void LETIMER0_setup(sleepstate_enum);
 void LETIMER0_IRQHandler(void);

@@ -17,8 +17,10 @@
 #include "letimer.h"
 #include "gpio.h"
 #include "timer.h"
+#include "i2c.h"
 
 volatile int gpio_flag =0;
+bool i2c_flag = false;
 
 void USART1_setup(){
 
@@ -144,6 +146,7 @@ void GPIO_ODD_IRQHandler(void){
 	if(gpio_flag==0){
 	  //led1_off();
 		i2c_enable();
+		i2c_flag = true;
     	while (!(USART1->STATUS & USART_STATUS_TXBL));
 		USART1->TXDOUBLE= 0x1016;
 		while (!(USART1->STATUS & USART_STATUS_TXC));
@@ -158,6 +161,7 @@ void GPIO_ODD_IRQHandler(void){
      }else{
 	  //led1_on();
 	  i2c_disable();
+	  i2c_flag = false;
 	    while (!(USART1->STATUS & USART_STATUS_TXBL));
 	   	USART1->TXDOUBLE= 0x2016;
 	   	while (!(USART1->STATUS & USART_STATUS_TXC));

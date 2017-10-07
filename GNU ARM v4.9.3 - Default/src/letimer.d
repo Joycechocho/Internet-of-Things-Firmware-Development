@@ -52,7 +52,8 @@ src/letimer.o: ../src/letimer.c ../src/main.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_cmu.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_letimer.h \
  /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_core.h \
- /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_common.h
+ /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_common.h \
+ ../src/i2c.h ../src/usart.h
 
 ../src/main.h:
 
@@ -167,3 +168,7 @@ src/letimer.o: ../src/letimer.c ../src/main.h \
 /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_core.h:
 
 /Applications/Simplicity\ Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//platform/emlib/inc/em_common.h:
+
+../src/i2c.h:
+
+../src/usart.h:

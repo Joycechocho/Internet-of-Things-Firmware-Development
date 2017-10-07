@@ -7,6 +7,9 @@
 #include "em_letimer.h"
 #include "em_core.h"
 #include "sleep.h"
+#include "i2c.h"
+#include "usart.h"
+
 
 /**************************************************************************//**
  * 	@brief
@@ -86,11 +89,16 @@ void LETIMER0_IRQHandler(void) {
 
 	LETIMER_IntClear(LETIMER0,intFlags);
 
-	    if (intFlags & LETIMER_IFS_COMP0) {
-	        led0_on();
+	    if ((intFlags & LETIMER_IFS_COMP0) & i2c_flag) {
+	        //led0_on();
+	    	uint16_t temp= I2C0_read();
+	    	Caculate_Celsius(temp);
 	    }
+
+	    /*
 	    if (intFlags & LETIMER_IFS_COMP1) {
 	        led0_off();
 	    }
+	    */
 	CORE_ATOMIC_IRQ_ENABLE();
 }

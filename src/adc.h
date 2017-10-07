@@ -1,5 +1,5 @@
-#define LE_PERIOD_SECONDS (3) // Period must be in the range 0 - 2 seconds
-#define LE_ON_SECONDS (.2)    //200mS
+//#define LE_PERIOD_SECONDS (3) // Period must be in the range 0 - 2 seconds
+//#define LE_ON_SECONDS (0)    //200mS
 
 #define BUTTON_PRESSED_LOWRANGE 30
 #define BUTTON_PRESSED_HIGHRANGE 4000

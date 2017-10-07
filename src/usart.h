@@ -7,3 +7,5 @@ void suspend_to_normal(void);
 void BMA280_enable(void);
 void BMA280_disable(void);
 void GPIO_ODD_IRQHandler(void);
+
+extern bool i2c_flag;
