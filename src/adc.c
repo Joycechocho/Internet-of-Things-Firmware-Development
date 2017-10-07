@@ -98,7 +98,7 @@ void ADC0_IRQHandler() {
 
 	if (adc_value < SOUTH_THRESHOLD)
 	{
-		//led1_off();
+		led1_off();
 		BMA280_disable();
 		//bma280_write_byte(USART1, 0x11, 0x80);
 	 }

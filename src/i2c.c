@@ -62,8 +62,8 @@ void I2C0_setup(){
 
 void i2c_enable(void){
 	GPIO_PinOutSet(gpioPortD, 9);
-	//TIMER_Enable(TIMER0,true);
-	for(int i = 0; i <10000000; i++);
+	TIMER_Enable(TIMER0,true);
+	//for(int i = 0; i <10000000; i++);
 	I2C0_setup();
 	I2C_Enable(I2C0, true);
 }
