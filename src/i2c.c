@@ -68,7 +68,7 @@ void i2c_enable(void){
 	I2C_Enable(I2C0, true);
 }
 
-void i2c_disabe(void){
+void i2c_disable(void){
 	GPIO_PinOutClear(gpioPortD, 9);
 	I2C_Enable(I2C0, false);
 }

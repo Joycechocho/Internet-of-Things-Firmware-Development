@@ -173,8 +173,8 @@ int main(void)
 
 
 
-	i2c_enable();
-	temp= I2C0_read();
+	//i2c_enable();
+	//temp= I2C0_read();
 	//Caculate_Celsius(I2C0_read());
 
 

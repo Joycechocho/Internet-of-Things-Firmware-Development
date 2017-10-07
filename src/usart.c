@@ -142,7 +142,8 @@ void GPIO_ODD_IRQHandler(void){
 	GPIO->IFC = 0x00000800;
 
 	if(gpio_flag==0){
-	  led1_off();
+	  //led1_off();
+		i2c_enable();
     	while (!(USART1->STATUS & USART_STATUS_TXBL));
 		USART1->TXDOUBLE= 0x1016;
 		while (!(USART1->STATUS & USART_STATUS_TXC));
@@ -155,7 +156,8 @@ void GPIO_ODD_IRQHandler(void){
 		USART1->CMD &= ~(_USART_CMD_CLEARRX_MASK);
 		gpio_flag =1;
      }else{
-	  led1_on();
+	  //led1_on();
+	  i2c_disable();
 	    while (!(USART1->STATUS & USART_STATUS_TXBL));
 	   	USART1->TXDOUBLE= 0x2016;
 	   	while (!(USART1->STATUS & USART_STATUS_TXC));
