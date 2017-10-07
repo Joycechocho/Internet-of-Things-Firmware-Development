@@ -15,3 +15,5 @@
 
 void ADC0_setup();
 void ADC0_IRQHandler();
+
+extern int set_temperature;

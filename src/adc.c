@@ -14,6 +14,7 @@
 #include "em_int.h"
 #include "em_core.h"
 
+int set_temperature = 15;
 
 void ADC0_setup(){
 
@@ -106,12 +107,14 @@ void ADC0_IRQHandler() {
 	    //onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
 	    //onTime = (onTime - 0.5) * CurrentLFAFreq;
 	    //LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_west);
+		set_temperature = set_temperature - 5;
 	}
 	else if (adc_value < EAST_THRESHOLD)
 	{
 		//onTime = ((float)LETIMER_CompareGet(LETIMER0, 1)/CurrentLFAFreq);
 	    //onTime = (onTime + 0.5) * CurrentLFAFreq;
 	    //LETIMER_CompareSet(LETIMER0,1,le_comp1_em3_east);
+		set_temperature = set_temperature + 5;
 	}
 	else if(adc_value< NORTH_THRESHOLD)
 	{

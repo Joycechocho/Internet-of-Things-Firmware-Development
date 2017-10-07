@@ -9,6 +9,7 @@
 #include "sleep.h"
 #include "i2c.h"
 #include "usart.h"
+#include "adc.h"
 
 
 /**************************************************************************//**
@@ -93,6 +94,11 @@ void LETIMER0_IRQHandler(void) {
 	        //led0_on();
 	    	uint16_t temp= I2C0_read();
 	    	Caculate_Celsius(temp);
+	    	if (temp < set_temperature){
+	    		led1_on();
+	    	}else if (temp > set_temperature) {
+	    		led1_off();
+	    	}
 	    }
 
 	    /*
