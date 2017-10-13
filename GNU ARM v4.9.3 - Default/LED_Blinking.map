@@ -1898,31 +1898,31 @@ OUTPUT(LED_Blinking.axf elf32-littlearm)
  .comment       0x0000000000000000       0x6f /Applications/Simplicity Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//protocol/bluetooth_2.4/lib/EFR32BG1B/GCC/bgapi.a(ubt_gatt_client.c.obj)
  .comment       0x0000000000000000       0x6f /Applications/Simplicity Studio.app/Contents/Eclipse/developer/sdks/gecko_sdk_suite/v1.1//protocol/bluetooth_2.4/lib/EFR32BG1B/GCC/bgapi.a(att_client.c.obj)
 
-.debug_info     0x0000000000000000    0x1528d
+.debug_info     0x0000000000000000    0x15294
  .debug_info    0x0000000000000000      0x168 ./application_properties.o
  .debug_info    0x0000000000000168      0x58e ./gatt_db.o
- .debug_info    0x00000000000006f6     0x4144 ./main.o
- .debug_info    0x000000000000483a     0x13f4 ./bgapi/dmadrv.o
- .debug_info    0x0000000000005c2e     0x1a66 ./bgapi/em_adc.o
- .debug_info    0x0000000000007694      0x1b4 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
- .debug_info    0x0000000000007848     0x1b9c ./emlib/em_cmu.o
- .debug_info    0x00000000000093e4      0xa05 ./emlib/em_gpio.o
- .debug_info    0x0000000000009de9      0x8d7 ./emlib/em_i2c.o
- .debug_info    0x000000000000a6c0      0x507 ./emlib/em_letimer.o
- .debug_info    0x000000000000abc7      0x6b8 ./emlib/em_rtcc.o
- .debug_info    0x000000000000b27f      0x276 ./emlib/em_system.o
- .debug_info    0x000000000000b4f5      0x94f ./emlib/em_timer.o
- .debug_info    0x000000000000be44      0xf55 ./emlib/em_usart.o
- .debug_info    0x000000000000cd99     0x15b7 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
- .debug_info    0x000000000000e350     0x185d ./src/InitDevice.o
- .debug_info    0x000000000000fbad     0x1511 ./src/adc.o
- .debug_info    0x00000000000110be      0x7e6 ./src/cmu.o
- .debug_info    0x00000000000118a4      0x645 ./src/gpio.o
- .debug_info    0x0000000000011ee9      0x9d9 ./src/i2c.o
- .debug_info    0x00000000000128c2      0xb6f ./src/letimer.o
- .debug_info    0x0000000000013431      0x380 ./src/sleep.o
- .debug_info    0x00000000000137b1      0xc5a ./src/timer.o
- .debug_info    0x000000000001440b      0xe82 ./src/usart.o
+ .debug_info    0x00000000000006f6     0x414b ./main.o
+ .debug_info    0x0000000000004841     0x13f4 ./bgapi/dmadrv.o
+ .debug_info    0x0000000000005c35     0x1a66 ./bgapi/em_adc.o
+ .debug_info    0x000000000000769b      0x1b4 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
+ .debug_info    0x000000000000784f     0x1b9c ./emlib/em_cmu.o
+ .debug_info    0x00000000000093eb      0xa05 ./emlib/em_gpio.o
+ .debug_info    0x0000000000009df0      0x8d7 ./emlib/em_i2c.o
+ .debug_info    0x000000000000a6c7      0x507 ./emlib/em_letimer.o
+ .debug_info    0x000000000000abce      0x6b8 ./emlib/em_rtcc.o
+ .debug_info    0x000000000000b286      0x276 ./emlib/em_system.o
+ .debug_info    0x000000000000b4fc      0x94f ./emlib/em_timer.o
+ .debug_info    0x000000000000be4b      0xf55 ./emlib/em_usart.o
+ .debug_info    0x000000000000cda0     0x15b7 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
+ .debug_info    0x000000000000e357     0x185d ./src/InitDevice.o
+ .debug_info    0x000000000000fbb4     0x1511 ./src/adc.o
+ .debug_info    0x00000000000110c5      0x7e6 ./src/cmu.o
+ .debug_info    0x00000000000118ab      0x645 ./src/gpio.o
+ .debug_info    0x0000000000011ef0      0x9d9 ./src/i2c.o
+ .debug_info    0x00000000000128c9      0xb6f ./src/letimer.o
+ .debug_info    0x0000000000013438      0x380 ./src/sleep.o
+ .debug_info    0x00000000000137b8      0xc5a ./src/timer.o
+ .debug_info    0x0000000000014412      0xe82 ./src/usart.o
 
 .debug_abbrev   0x0000000000000000     0x2927
  .debug_abbrev  0x0000000000000000       0x97 ./application_properties.o
@@ -2031,35 +2031,35 @@ OUTPUT(LED_Blinking.axf elf32-littlearm)
                                         0x2ae (size before relaxing)
  .debug_str     0x0000000000000257      0x564 ./gatt_db.o
                                         0x75e (size before relaxing)
- .debug_str     0x00000000000007bb     0x49c0 ./main.o
-                                       0x4f47 (size before relaxing)
- .debug_str     0x000000000000517b      0xe4b ./bgapi/dmadrv.o
+ .debug_str     0x00000000000007bb     0x49c6 ./main.o
+                                       0x4f4d (size before relaxing)
+ .debug_str     0x0000000000005181      0xe4b ./bgapi/dmadrv.o
                                        0x10bd (size before relaxing)
- .debug_str     0x0000000000005fc6     0x27d0 ./bgapi/em_adc.o
+ .debug_str     0x0000000000005fcc     0x27d0 ./bgapi/em_adc.o
                                        0x2a71 (size before relaxing)
- .debug_str     0x0000000000008796       0x90 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
+ .debug_str     0x000000000000879c       0x90 ./device/EFR32_B_1_1_B/gcc/startup_efr32bg1b.o
                                         0x294 (size before relaxing)
- .debug_str     0x0000000000008826      0xcbe ./emlib/em_cmu.o
+ .debug_str     0x000000000000882c      0xcbe ./emlib/em_cmu.o
                                        0x13db (size before relaxing)
- .debug_str     0x00000000000094e4      0x505 ./emlib/em_gpio.o
+ .debug_str     0x00000000000094ea      0x505 ./emlib/em_gpio.o
                                         0x82c (size before relaxing)
- .debug_str     0x00000000000099e9      0x310 ./emlib/em_i2c.o
+ .debug_str     0x00000000000099ef      0x310 ./emlib/em_i2c.o
                                         0x7e4 (size before relaxing)
- .debug_str     0x0000000000009cf9      0x1e8 ./emlib/em_letimer.o
+ .debug_str     0x0000000000009cff      0x1e8 ./emlib/em_letimer.o
                                         0x44f (size before relaxing)
- .debug_str     0x0000000000009ee1      0x573 ./emlib/em_rtcc.o
+ .debug_str     0x0000000000009ee7      0x573 ./emlib/em_rtcc.o
                                         0x7f4 (size before relaxing)
- .debug_str     0x000000000000a454       0xd6 ./emlib/em_system.o
+ .debug_str     0x000000000000a45a       0xd6 ./emlib/em_system.o
                                         0x2f9 (size before relaxing)
- .debug_str     0x000000000000a52a      0x71d ./emlib/em_timer.o
+ .debug_str     0x000000000000a530      0x71d ./emlib/em_timer.o
                                         0x9cf (size before relaxing)
- .debug_str     0x000000000000ac47      0x8ec ./emlib/em_usart.o
+ .debug_str     0x000000000000ac4d      0x8ec ./emlib/em_usart.o
                                         0xdfa (size before relaxing)
- .debug_str     0x000000000000b533      0x3e1 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
+ .debug_str     0x000000000000b539      0x3e1 ./kit_flashpwr/BRD4302A/mx25flash_spi.o
                                         0xe95 (size before relaxing)
- .debug_str     0x000000000000b914      0x679 ./src/InitDevice.o
+ .debug_str     0x000000000000b91a      0x679 ./src/InitDevice.o
                                        0x162a (size before relaxing)
- .debug_str     0x000000000000bf8d      0x2fc ./src/adc.o
+ .debug_str     0x000000000000bf93      0x2f6 ./src/adc.o
                                        0x2994 (size before relaxing)
  .debug_str     0x000000000000c289       0x26 ./src/cmu.o
                                         0x98d (size before relaxing)

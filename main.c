@@ -131,7 +131,7 @@ int main(void)
 {
 
 	int i;
-	uint16_t temp = 0;
+	float temp = 0;
 
 	blockSleepMode(EM3);
 
@@ -174,8 +174,7 @@ int main(void)
 
 
 	//i2c_enable();
-	//temp= I2C0_read();
-	//Caculate_Celsius(I2C0_read());
+	//temp=Caculate_Celsius(I2C0_read());
 
 
   while (1) {
